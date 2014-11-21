@@ -1,4 +1,4 @@
 menda-plasma-next
 =================
 
-PKGBUILD
+Manjaro's menda theme set for kde plasma next
