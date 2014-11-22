@@ -1,7 +1,7 @@
 # Maintainer: anex <assassin.anex[@]gmail.com>
  
 pkgname=menda-look-feel-git
-pkgver=20141121
+pkgver=20141122
 pkgrel=1
 arch=('any')
 pkgdesc="Manjaro's Plasma Look and Feel Plugin"
