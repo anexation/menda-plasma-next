@@ -1,16 +1,16 @@
 [SddmGreeterTheme]
-Name=menda
-Description=menda Dark Theme
-Author=anex
-Copyright=n/a
-License=n/a
+Name=Menda
+Description=Menda Theme
+Author=David Edmundson
+Copyright=(c) 2014, David Edmundson
+License=CC-BY-SA
 Type=sddm-theme
 Version=0.1
-Website=https://manjaro.org
-Screenshot=screenshot.jpg
+Website=https://github.com/sddm/sddm
+Screenshot=menda.png
 MainScript=Main.qml
 ConfigFile=theme.conf
 TranslationsDirectory=translations
-Email=assassin.anex@gmail.com
+Email=davidedmundson@kde.org
 Theme-Id=menda
 Theme-API=2.0
