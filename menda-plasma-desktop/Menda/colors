@@ -103,8 +103,8 @@ ForegroundPositive=17,209,22
 ForegroundVisited=230,230,61
 
 [General]
-ColorScheme=menda
-Name=Menda Breeze
+ColorScheme=Menda
+Name=Menda
 shadeSortColumn=true
 
 [KDE]
