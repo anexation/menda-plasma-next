@@ -1,37 +1,49 @@
-/*
- *   Copyright 2014 David Edmundson <davidedmundson@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+/***************************************************************************
+* Copyright (c) 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com
+*
+* Permission is hereby granted, free of charge, to any person
+* obtaining a copy of this software and associated documentation
+* files (the "Software"), to deal in the Software without restriction,
+* including without limitation the rights to use, copy, modify, merge,
+* publish, distribute, sublicense, and/or sell copies of the Software,
+* and to permit persons to whom the Software is furnished to do so,
+* subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+* THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+* OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+* OR OTHER DEALINGS IN THE SOFTWARE.
+*
+***************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1 as Controls
-
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
+import QtQuick 2.0
 import SddmComponents 2.0
 
-import "./components"
+Rectangle {
+    id: container
+    width: 1024
+    height: 768
 
-Image {
-    id: root
-    width: 1000
-    height: 1000
+    property int sessionIndex: session.index
+
+    TextConstants { id: textConstants }
+
+    Connections {
+        target: sddm
+        onLoginSucceeded: {
+        }
+
+        onLoginFailed: {
+            txtMessage.text = textConstants.loginFailed
+            listView.currentItem.password.text = ""
+        }
+    }
 
     Repeater {
         model: screenModel
@@ -47,178 +59,207 @@ Image {
         }
     }
 
-    property bool debug: false
-
     Rectangle {
-        id: debug3
-        color: "green"
-        visible: debug
-        width: 3
-        height: parent.height
-        anchors.horizontalCenter: root.horizontalCenter
-    }
+        property variant geometry: screenModel.geometry(screenModel.primary)
+        x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
+        color: "transparent"
 
-    Controls.StackView {
-        id: stackView
+        Component {
+            id: userDelegate
 
-        height: units.largeSpacing*14
-        anchors.centerIn: parent
+            PictureBox {
+                anchors.verticalCenter: parent.verticalCenter
+                name: (model.realName === "") ? model.name : model.realName
+                icon: model.icon
+                
+                focus: (listView.currentIndex === index) ? true : false
+                state: (listView.currentIndex === index) ? "active" : ""
 
-        initialItem: MendaBlock {
-            id: loginPrompt
-            main: UserSelect {
-                id: usersSelection
-                model: userModel
-                selectedIndex: userModel.lastIndex
+                onLogin: sddm.login(model.name, password, sessionIndex);
 
-                Connections {
-                    target: sddm
-                    onLoginFailed: {
-                        usersSelection.notification = i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Login Failed")
-                    }
-                }
-
-            }
-
-            controls: Item {
-                height: childrenRect.height
-
-                property alias password: passwordInput.text
-                property alias sessionIndex: sessionCombo.currentIndex
-
-                ColumnLayout {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 0
-                    RowLayout {
-                        //NOTE password is deliberately the first child so it gets focus
-                        //be careful when re-ordering
-
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        PlasmaComponents.TextField {
-                            id: passwordInput
-                            placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Password")
-                            echoMode: TextInput.Password
-                            onAccepted: loginPrompt.startLogin()
-                            focus: true
-
-                            //focus works in qmlscene
-                            //but this seems to be needed when loaded from SDDM
-                            //I don't understand why, but we have seen this before in the old lock screen
-                            Timer {
-                                interval: 200
-                                running: true
-                                repeat: false
-                                onTriggered: passwordInput.forceActiveFocus()
-                            }
-                            //end hack
-
-                            Keys.onEscapePressed: {
-                                //nextItemInFocusChain(false) is previous Item
-                                nextItemInFocusChain(false).forceActiveFocus();
-                            }
-
-                            //if empty and left or right is pressed change selection in user switch
-                            //this cannot be in keys.onLeftPressed as then it doesn't reach the password box
-                            Keys.onPressed: {
-                                if (event.key == Qt.Key_Left && !text) {
-                                    loginPrompt.mainItem.decrementCurrentIndex();
-                                    event.accepted = true
-                                }
-                                if (event.key == Qt.Key_Right && !text) {
-                                    loginPrompt.mainItem.incrementCurrentIndex();
-                                    event.accepted = true
-                                }
-                            }
-
-                        }
-
-                        PlasmaComponents.Button {
-                            //this keeps the buttons the same width and thus line up evenly around the centre
-                            Layout.minimumWidth: passwordInput.width
-                            text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Login")
-                            onClicked: loginPrompt.startLogin();
-                        }
-                    }
-
-                    MendaLabel {
-                        id: capsLockWarning
-                        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Caps Lock is on")
-                        visible: keystateSource.data["Caps Lock"]["Locked"]
-
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        font.weight: Font.Bold
-
-                        PlasmaCore.DataSource {
-                            id: keystateSource
-                            engine: "keystate"
-                            connectedSources: "Caps Lock"
-                        }
-                    }
-                }
-
-                PlasmaComponents.ComboBox {
-                    id: sessionCombo
-                    model: sessionModel
-                    currentIndex: sessionModel.lastIndex
-
-                    width: 200
-                    textRole: "name"
-
-                    anchors.left: parent.left
-                }
-
-                LogoutOptions {
-                    mode: ""
-                    canShutdown: true
-                    canReboot: true
-                    canLogout: false
-                    exclusive: false
-
-                    anchors {
-                        right: parent.right
-                    }
-
-                    onModeChanged: {
-                        if (mode) {
-                            stackView.push(logoutScreenComponent, {"mode": mode})
-                        }
-                    }
-                    onVisibleChanged: if(visible) {
-                        mode = ""
-                    }
-                }
-
-                Connections {
-                    target: sddm
-                    onLoginFailed: {
-                        passwordInput.selectAll()
-                        passwordInput.forceActiveFocus()
-                    }
-                }
-
-            }
-
-            function startLogin () {
-                sddm.login(mainItem.selectedUser, controlsItem.password, controlsItem.sessionIndex)
-            }
-
-            Component {
-                id: logoutScreenComponent
-                LogoutScreen {
-                    onCancel: {
-                        stackView.pop()
-                    }
-
-                    onShutdownRequested: {
-                        sddm.powerOff()
-                    }
-
-                    onRebootRequested: {
-                        sddm.reboot()
-                    }
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: listView.currentIndex = index
+                    onClicked: listView.focus = true
                 }
             }
         }
 
+        Row {
+            anchors.fill: parent
+
+            Rectangle {
+                width: parent.width / 2; height: parent.height
+                color: "#00000000"
+
+                Clock {
+                    id: clock
+                    anchors.centerIn: parent
+                    color: "#E0E0E0"
+                    timeFont.family: "Oxygen"
+                }
+            }
+
+            Rectangle {
+                width: parent.width / 2; height: parent.height
+                color: "#22000000"
+                clip: true
+
+                Item {
+                    id: usersContainer
+                    width: parent.width; height: 300
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    ImageButton {
+                        id: prevUser
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.margins: 10
+                        source: "angle-left.png"
+
+                        onClicked: listView.decrementCurrentIndex()
+
+                        KeyNavigation.backtab: btnShutdown; KeyNavigation.tab: listView
+                    }
+
+                    ListView {
+                        id: listView
+                        height: parent.height
+                        anchors.left: prevUser.right; anchors.right: nextUser.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.margins: 10
+                        
+                        clip: true
+                        focus: true
+
+                        spacing: 5
+
+                        model: userModel
+                        delegate: userDelegate
+                        orientation: ListView.Horizontal
+                        currentIndex: userModel.lastIndex
+
+                        KeyNavigation.backtab: prevUser; KeyNavigation.tab: nextUser
+                    }
+
+                    ImageButton {
+                        id: nextUser
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.margins: 10
+                        source: "angle-right.png"
+                        onClicked: listView.incrementCurrentIndex()
+                        KeyNavigation.backtab: listView; KeyNavigation.tab: session
+                    }
+                }
+
+                Text {
+                    id: txtMessage
+                    anchors.top: usersContainer.bottom;
+                    anchors.margins: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: "white"
+                    
+                    text: textConstants.promptSelectUser
+
+                    font.pixelSize: 20
+                }
+            }
+        }
+
+        Rectangle {
+            id: actionBar
+            anchors.top: parent.top;
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width; height: 40
+            color: "#262626"
+            Row {
+                anchors.left: parent.left
+                anchors.margins: 5
+                height: parent.height
+                spacing: 5
+
+                Text {
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "#8CBC65"
+
+                    text: textConstants.session
+                    font.pixelSize: 16
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                ComboBox {
+                    id: session
+                    width: 245
+                    anchors.verticalCenter: parent.verticalCenter
+                    borderColor: "#8CBC65" 
+                    arrowIcon: "angle-down.png"
+                    focusColor: "#8CBC65"
+                    hoverColor: "#8CBC65"
+                    model: sessionModel
+                    index: sessionModel.lastIndex
+
+                    font.pixelSize: 14
+
+                    KeyNavigation.backtab: nextUser; KeyNavigation.tab: layoutBox
+                }
+
+                Text {
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "#8CBC65"
+
+                    text: textConstants.layout
+                    font.pixelSize: 16
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                LayoutBox {
+                    id: layoutBox
+                    width: 90
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 14
+                    borderColor: "#8CBC65"
+                    focusColor: "#8CBC65"
+                    hoverColor: "#8CBC65"
+                    arrowIcon: "angle-down.png"
+
+                    KeyNavigation.backtab: session; KeyNavigation.tab: btnShutdown
+                }
+            }
+
+            Row {
+                height: parent.height
+                anchors.right: parent.right
+                anchors.margins: 5
+                spacing: 5
+                
+                ImageButton {
+                    id: btnReboot
+                    height: parent.height
+                    source: "restart_primary.svg"
+                   
+                    visible: sddm.canReboot
+
+                    onClicked: sddm.reboot()
+
+                    KeyNavigation.backtab: layoutBox; KeyNavigation.tab: btnShutdown
+                }
+
+                ImageButton {
+                    id: btnShutdown
+                    height: parent.height
+                    source: "shutdown_primary.svg"
+                    
+                    visible: sddm.canPowerOff
+
+                    onClicked: sddm.powerOff()
+
+                    KeyNavigation.backtab: btnReboot; KeyNavigation.tab: prevUser
+                }
+            }
+        }
     }
 }
