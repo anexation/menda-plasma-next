@@ -1,7 +1,7 @@
 # Maintainer: anex <assassin.anex[@]gmail.com>
 
 pkgname=menda-kde4-git
-pkgver=20141114
+pkgver=20141125
 pkgrel=1
 pkgdesc='Menda widget style for KDE4 applications'
 arch=('i686' 'x86_64')
@@ -11,7 +11,7 @@ depends=('kdelibs')
 makedepends=('extra-cmake-modules' 'git' 'automoc4' 'ki18n')
 conflicts=('')
 provides=('menda-kde4')
-source=('menda-kde4.tar.gz')
+source=('menda-kde4.zip')
 md5sums=('SKIP')
 
 pkgver() {

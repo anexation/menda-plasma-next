@@ -1,18 +1,18 @@
 # Maintainer: anex <assassin.anex[@]gmail.com>
 
 pkgname=menda-git
-pkgver=20141114
+pkgver=20141125
 pkgrel=1
 pkgdesc='Artwork, styles and assets for the Menda visual style for the Plasma Next Desktop'
 arch=('i686' 'x86_64')
 url='https://github.com/anexation/Menda-Menda-Fork'
 license=('LGPL')
-depends=('frameworkintegration')
+depends=('frameworkintegration' 'menda-icon-themes')
 makedepends=('extra-cmake-modules' 'git')
 optdepends=('menda-kde4-git: Menda widget style for KDE4 applications')
-conflicts=('menda-icon-themes' 'menda-cursor')
-provides=('menda' 'menda-icon-themes' 'menda-cursor')
-source=('menda.tar.gz')
+conflicts=('menda-cursor')
+provides=('menda' 'menda-cursor')
+source=('menda.zip')
 md5sums=('SKIP')
 
 pkgver() {
