@@ -11,4 +11,4 @@ Theme=Menda-Circle
 name=Menda
 
 [kcminputrc][Mouse]
-cursorTheme=menda_cursors
+cursorTheme=Menda-Cursor
