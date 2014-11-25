@@ -7,10 +7,11 @@ pkgdesc='Artwork, styles and assets for the Menda visual style for the Plasma Ne
 arch=('i686' 'x86_64')
 url='https://github.com/anexation/Menda-Menda-Fork'
 license=('LGPL')
-depends=('frameworkintegration' 'menda-square-icon-theme' 'menda-circle-icon-theme' 'xcursor-menda')
+depends=('frameworkintegration' 'menda-icon-themes')
 makedepends=('extra-cmake-modules' 'git')
 optdepends=('menda-kde4-git: Menda widget style for KDE4 applications')
-provides=('menda')
+conflicts=('menda-cursor')
+provides=('menda' 'menda-cursor')
 source=('menda.zip')
 md5sums=('SKIP')
 

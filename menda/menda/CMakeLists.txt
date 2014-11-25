@@ -18,7 +18,6 @@ else()
   include(KDECompilerSettings)
   include(GenerateExportHeader)
 
-  add_subdirectory(cursors)
   add_subdirectory(kstyle)
   add_subdirectory(misc)
   add_subdirectory(qtquickcontrols)
