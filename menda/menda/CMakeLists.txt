@@ -18,11 +18,11 @@ else()
   include(KDECompilerSettings)
   include(GenerateExportHeader)
 
+  add_subdirectory(kdecoration)
   add_subdirectory(kstyle)
   add_subdirectory(misc)
   add_subdirectory(qtquickcontrols)
   add_subdirectory(wallpapers)
-  add_subdirectory(windec)
 
   INSTALL(FILES colors/Menda.colors DESTINATION ${DATA_INSTALL_DIR}/color-schemes/)
   INSTALL(FILES colors/MendaDark.colors DESTINATION ${DATA_INSTALL_DIR}/color-schemes/)
@@ -31,3 +31,7 @@ else()
     ki18n_install(po)
   endif()
 endif()
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+message(" * Orion theme for GTK 2 and 3 will be set by gtkmenda kconf_update binary,"
+        " please install or add a runtime dependency to packages. https://github.com/shimmerproject/Orion")

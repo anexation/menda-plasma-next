@@ -74,7 +74,7 @@ QString isGtkThemeSetToOxygen(QString gtkSettingsFile, QString settingsKey)
  */
 int setGtk2()
 {
-    const QString gtk2Theme = QStringLiteral("Orion"); // Orion looks kindae like menda
+    const QString gtk2Theme = QStringLiteral("Menda"); // Orion looks kindae like menda
     const QString gtk2ThemeSettings = QStringLiteral("gtk-2.0/gtkrc"); // system installed file to check for
 
     const QString gtkThemeDirectory = isGtkThemeInstalled(gtk2Theme, gtk2ThemeSettings);
@@ -108,7 +108,7 @@ int setGtk2()
     out << QStringLiteral("gtk-font-name=\"Oxygen-Sans Sans-Book 10\"\n"); // matches plasma-workspace:startkde/startkde.cmake
     out << QStringLiteral("gtk-theme-name=\"Menda\"\n");
     out << QStringLiteral("gtk-icon-theme-name=\"Menda-Circle\"\n"); // menda icons don't seem to work with gtk
-    out << QStringLiteral("gtk-fallback-icon-theme=\"gnome\"\n");
+    out << QStringLiteral("gtk-fallback-icon-theme=\"breeze\"\n");
     out << QStringLiteral("gtk-toolbar-style=GTK_TOOLBAR_ICONS\n");
     out << QStringLiteral("gtk-menu-images=1\n");
     out << QStringLiteral("gtk-button-images=1\n");
@@ -123,7 +123,7 @@ int setGtk3()
 {
     qCDebug(GTKMENDA) << "setGtk3()";
 
-    const QString gtk3Theme = QStringLiteral("Orion"); // Orion looks kindae like menda
+    const QString gtk3Theme = QStringLiteral("Menda"); // Orion looks kindae like menda
     const QString gtk3ThemeSettings = QStringLiteral("gtk-3.0/settings.ini"); // check for installed /usr/share/themes/Orion/gtk-3.0/settings.ini
 
     const QString gtkThemeDirectory = isGtkThemeInstalled(gtk3Theme, gtk3ThemeSettings);
@@ -151,7 +151,7 @@ int setGtk3()
     out << QStringLiteral("gtk-font-name=Oxygen-Sans 10\n"); // matches plasma-workspace:startkde/startkde.cmake
     out << QStringLiteral("gtk-theme-name=")+gtk3Theme+QStringLiteral("\n");
     out << QStringLiteral("gtk-icon-theme-name=Menda-Circle\n"); // menda icons don't seem to work with gtk
-    out << QStringLiteral("gtk-fallback-icon-theme=gnome\n");
+    out << QStringLiteral("gtk-fallback-icon-theme=breeze\n");
     out << QStringLiteral("gtk-toolbar-style=GTK_TOOLBAR_ICONS\n");
     out << QStringLiteral("gtk-menu-images=1\n");
     out << QStringLiteral("gtk-button-images=1\n");

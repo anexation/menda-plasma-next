@@ -93,12 +93,6 @@ namespace Menda
 
         private:
 
-        //* engine enability
-        bool _enabled;
-
-        //* animation duration
-        int _duration;
-
         //* map
         PaintDeviceDataMap<WidgetStateData> _data;
 

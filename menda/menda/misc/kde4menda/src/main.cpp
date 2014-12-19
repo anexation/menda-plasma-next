@@ -73,7 +73,8 @@ QVariant readConfigValue(KSharedConfigPtr lnfConfig, KSharedConfigPtr defaultLnf
         }
     }
 
-    KConfigGroup lnfCg(defaultLnfConfig, group);
+    KConfigGroup lnfCg(defaultLnfConfig, "kdeglobals");
+    lnfCg = KConfigGroup(defaultLnfConfig, group);
     if (lnfCg.isValid()) {
         return lnfCg.readEntry(key, defaultValue);
     }
@@ -99,7 +100,7 @@ void updateKdeGlobals()
         lnfConfig = KSharedConfig::openConfig(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "plasma/look-and-feel/" + looknfeel + "/contents/defaults"));
     }
 
-    const QString widgetStyle = readConfigValue(lnfConfig, defaultLnfConfig, "KDE", "widgetStyle", "menda").toString();
+    const QString widgetStyle = readConfigValue(lnfConfig, defaultLnfConfig, "KDE", "widgetStyle", "Menda").toString();
     const QString colorScheme = readConfigValue(lnfConfig, defaultLnfConfig, "General", "ColorScheme", "Menda").toString();
     const QString icons = readConfigValue(lnfConfig, defaultLnfConfig, "Icons", "Theme", "Menda-Circle").toString();
 
@@ -109,9 +110,12 @@ void updateKdeGlobals()
     const bool hasWidgetStyle = QStyleFactory::keys().contains(widgetStyle);
     KConfigGroup group(&config, "General");
     group.writeEntry("ColorScheme", colorScheme);
-    group.sync();
+
+    qDebug() << "setting widget style:" << widgetStyle << hasWidgetStyle;
     if (hasWidgetStyle) {
         group.writeEntry("widgetStyle", widgetStyle);
+        //for some reason this seems necessary
+        group.sync();
     }
     applyColorScheme(colorScheme, &config);
     group.sync();

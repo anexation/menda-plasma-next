@@ -28,3 +28,25 @@ else()
 
 endif()
 
+########### next target ###############
+if(KF5Service_FOUND AND NOT MENDA_USE_KDE4)
+
+  set(menda_settings_SOURCES
+    mendaconfigdialog.cpp
+    main.cpp)
+
+  set(menda_settings_FORMS ui/mendaconfigdialog.ui)
+
+  ki18n_wrap_ui(menda_settings_FORMS_HEADERS ${menda_settings_FORMS})
+
+  add_executable(menda-settings5
+      ${menda_settings_SOURCES}
+      ${menda_settings_FORMS_HEADERS}
+ )
+
+  target_link_libraries(menda-settings5 Qt5::Core Qt5::Gui Qt5::Widgets Qt5::DBus)
+  target_link_libraries(menda-settings5 KF5::I18n KF5::WidgetsAddons KF5::ConfigCore KF5::ConfigGui KF5::Service)
+
+  install(TARGETS menda-settings5 ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+endif()

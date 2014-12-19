@@ -53,6 +53,7 @@ namespace Menda
 
         registerEngine( _headerViewEngine = new HeaderViewEngine( this ) );
         registerEngine( _widgetStateEngine = new WidgetStateEngine( this ) );
+        registerEngine( _inputWidgetEngine = new WidgetStateEngine( this ) );
         registerEngine( _scrollBarEngine = new ScrollBarEngine( this ) );
         registerEngine( _tabBarEngine = new TabBarEngine( this ) );
         registerEngine( _dialEngine = new DialEngine( this ) );
@@ -149,28 +150,27 @@ namespace Menda
         // combo box
         else if( qobject_cast<QComboBox*>( widget ) ) {
             _comboBoxEngine->registerWidget( widget, AnimationHover );
-            _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus );
-
+            _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus );
         }
 
         // spinbox
         else if( qobject_cast<QSpinBox*>( widget ) ) {
             _spinBoxEngine->registerWidget( widget );
-            _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus );
+            _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus );
         }
 
         // editors
-        else if( qobject_cast<QLineEdit*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
-        else if( qobject_cast<QTextEdit*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
-        else if( widget->inherits( "KTextEditor::View" ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        else if( qobject_cast<QLineEdit*>( widget ) ) { _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        else if( qobject_cast<QTextEdit*>( widget ) ) { _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        else if( widget->inherits( "KTextEditor::View" ) ) { _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
 
         // header views
         // need to come before abstract item view, otherwise is skipped
         else if( qobject_cast<QHeaderView*>( widget ) ) { _headerViewEngine->registerWidget( widget ); }
 
         // lists
-        else if( qobject_cast<QAbstractItemView*>( widget ) || widget->inherits("Q3ListView") )
-        { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        else if( qobject_cast<QAbstractItemView*>( widget ) )
+        { _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
 
         // tabbar
         else if( qobject_cast<QTabBar*>( widget ) ) { _tabBarEngine->registerWidget( widget ); }
@@ -179,7 +179,7 @@ namespace Menda
         else if( QAbstractScrollArea* scrollArea = qobject_cast<QAbstractScrollArea*>( widget ) ) {
 
             if( scrollArea->frameShadow() == QFrame::Sunken && (widget->focusPolicy()&Qt::StrongFocus) )
-            { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+            { _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
 
         }
 

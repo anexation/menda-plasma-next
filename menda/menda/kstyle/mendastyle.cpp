@@ -2785,12 +2785,12 @@ namespace Menda
         const bool hasFocus( enabled && isInputWidget && ( state & State_HasFocus ) );
 
         // focus takes precedence over mouse over
-        _animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus );
-        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
+        _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus );
+        _animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
         // retrieve animation mode and opacity
-        const AnimationMode mode( _animations->widgetStateEngine().frameAnimationMode( widget ) );
-        const qreal opacity( _animations->widgetStateEngine().frameOpacity( widget ) );
+        const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
+        const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
 
         // render
         if( !StyleConfigData::sidePanelDrawFrame() && widget && widget->property( PropertyNames::sidePanelView ).toBool() )
@@ -2849,12 +2849,12 @@ namespace Menda
             const bool hasFocus( enabled && ( state & State_HasFocus ) );
 
             // focus takes precedence over mouse over
-            _animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus );
-            _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
+            _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus );
+            _animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
             // retrieve animation mode and opacity
-            const AnimationMode mode( _animations->widgetStateEngine().frameAnimationMode( widget ) );
-            const qreal opacity( _animations->widgetStateEngine().frameOpacity( widget ) );
+            const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
+            const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
 
             // render
             const QColor background( palette.color( QPalette::Base ) );
@@ -4415,21 +4415,23 @@ namespace Menda
             // set font
             painter->setFont( menuItemOption->font );
 
+            // color role
+            const QPalette::ColorRole role = (useStrongFocus && ( selected || sunken )) ? QPalette::HighlightedText : QPalette::WindowText;
+
             // locate accelerator and render
             const int tabPosition( text.indexOf( QLatin1Char( '\t' ) ) );
             if( tabPosition >= 0 )
             {
+
+                const int textFlags( Qt::AlignVCenter | Qt::AlignRight );
                 QString accelerator( text.mid( tabPosition + 1 ) );
                 text = text.left( tabPosition );
-                drawItemText( painter, textRect, Qt::AlignRight | Qt::AlignVCenter | _mnemonics->textFlags(), palette, enabled, accelerator, QPalette::WindowText );
+                drawItemText( painter, textRect, textFlags, palette, enabled, accelerator, role );
+
             }
 
             // render text
             const int textFlags( Qt::AlignVCenter | (reverseLayout ? Qt::AlignRight : Qt::AlignLeft ) | _mnemonics->textFlags() );
-
-            // color role
-            const QPalette::ColorRole role = (useStrongFocus && ( selected || sunken )) ? QPalette::HighlightedText : QPalette::WindowText;
-
             textRect = option->fontMetrics.boundingRect( textRect, textFlags, text );
             drawItemText( painter, textRect, textFlags, palette, enabled, text, role );
 
@@ -5576,10 +5578,10 @@ namespace Menda
 
                 // update animation state
                 // hover takes precedence over focus
-                _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-                _animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus && !mouseOver );
-                const AnimationMode mode( _animations->widgetStateEngine().buttonAnimationMode( widget ) );
-                const qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget ) );
+                _animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver );
+                _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus && !mouseOver );
+                const AnimationMode mode( _animations->inputWidgetEngine().buttonAnimationMode( widget ) );
+                const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
 
                 if( flat ) {
 
