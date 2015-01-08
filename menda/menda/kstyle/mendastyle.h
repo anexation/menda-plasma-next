@@ -50,6 +50,7 @@ namespace Menda
     class Helper;
     class MdiWindowShadowFactory;
     class Mnemonics;
+    class PaletteHelper;
     class ShadowHelper;
     class SplitterFactory;
     class WidgetExplorer;
@@ -443,6 +444,9 @@ namespace Menda
         //* helper
         Helper* _helper;
 
+        //* palette helper
+        PaletteHelper* _paletteHelper;
+
         //* shadow helper
         ShadowHelper* _shadowHelper;
 
@@ -471,17 +475,17 @@ namespace Menda
         MendaPrivate::TabBarData* _tabBarData;
 
         //* icon hash
-        typedef QHash<StandardPixmap, QIcon> IconCache;
+        using IconCache = QHash<StandardPixmap, QIcon>;
         IconCache _iconCache;
 
         //* pointer to primitive specialized function
-        typedef bool (Style::*StylePrimitive)( const QStyleOption*, QPainter*, const QWidget* ) const;
+        using StylePrimitive = bool(Style::*)(const QStyleOption*, QPainter*, const QWidget* ) const;
 
         //* pointer to control specialized function
-        typedef bool (Style::*StyleControl)( const QStyleOption*, QPainter*, const QWidget* ) const;
+        using StyleControl = bool (Style::*)( const QStyleOption*, QPainter*, const QWidget* ) const;
 
         //* pointer to control specialized function
-        typedef bool (Style::*StyleComplexControl)( const QStyleOptionComplex*, QPainter*, const QWidget* ) const;
+        using StyleComplexControl = bool (Style::*)( const QStyleOptionComplex*, QPainter*, const QWidget* ) const;
 
         //*@name custom elements
         //@{

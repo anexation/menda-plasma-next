@@ -102,7 +102,7 @@ void updateKdeGlobals()
 
     const QString widgetStyle = readConfigValue(lnfConfig, defaultLnfConfig, "KDE", "widgetStyle", "Menda").toString();
     const QString colorScheme = readConfigValue(lnfConfig, defaultLnfConfig, "General", "ColorScheme", "Menda").toString();
-    const QString icons = readConfigValue(lnfConfig, defaultLnfConfig, "Icons", "Theme", "Menda-Circle").toString();
+    const QString icons = readConfigValue(lnfConfig, defaultLnfConfig, "Icons", "Theme", "menda").toString();
 
     cloneColorScheme(colorScheme);
 

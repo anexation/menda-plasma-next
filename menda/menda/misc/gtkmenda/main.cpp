@@ -62,7 +62,7 @@ QString isGtkThemeSetToOxygen(QString gtkSettingsFile, QString settingsKey)
             gtkrcSettings.beginGroup(settingsKey);
         }
         if (gtkrcSettings.value("gtk-theme-name") != QStringLiteral("Menda")) {
-            qCDebug(GTKMENDA) << "gtk settings file " + gtkSettingsFile + " already exists and is not using oxygen, will not change";
+            qCDebug(GTKMENDA) << "gtk settings file " + gtkSettingsFile + " already exists and is not using menda, will not change";
             return QString();
         }
     }
@@ -74,7 +74,7 @@ QString isGtkThemeSetToOxygen(QString gtkSettingsFile, QString settingsKey)
  */
 int setGtk2()
 {
-    const QString gtk2Theme = QStringLiteral("Menda"); // Orion looks kindae like menda
+    const QString gtk2Theme = QStringLiteral("Menda"); // Menda looks kindae like menda
     const QString gtk2ThemeSettings = QStringLiteral("gtk-2.0/gtkrc"); // system installed file to check for
 
     const QString gtkThemeDirectory = isGtkThemeInstalled(gtk2Theme, gtk2ThemeSettings);
@@ -123,8 +123,8 @@ int setGtk3()
 {
     qCDebug(GTKMENDA) << "setGtk3()";
 
-    const QString gtk3Theme = QStringLiteral("Menda"); // Orion looks kindae like menda
-    const QString gtk3ThemeSettings = QStringLiteral("gtk-3.0/settings.ini"); // check for installed /usr/share/themes/Orion/gtk-3.0/settings.ini
+    const QString gtk3Theme = QStringLiteral("Menda"); // Menda looks kindae like menda
+    const QString gtk3ThemeSettings = QStringLiteral("gtk-3.0/settings.ini"); // check for installed /usr/share/themes/Menda/gtk-3.0/settings.ini
 
     const QString gtkThemeDirectory = isGtkThemeInstalled(gtk3Theme, gtk3ThemeSettings);
     if (gtkThemeDirectory == 0) {

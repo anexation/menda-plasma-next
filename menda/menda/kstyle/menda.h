@@ -66,7 +66,7 @@ namespace Menda
         LineEdit_FrameWidth = 6,
 
         // menu items
-        MenuItem_MarginWidth = 4,
+        MenuItem_MarginWidth = 3,
         MenuItem_ItemSpacing = 4,
         MenuItem_AcceleratorSpace = 16,
         MenuButton_IndicatorWidth = 20,
@@ -94,11 +94,11 @@ namespace Menda
         // checkboxes and radio buttons
         CheckBox_Size = 20,
         CheckBox_FocusMarginWidth = 2,
-        CheckBox_ItemSpacing = 8,
+        CheckBox_ItemSpacing = 6,
 
         // menubar items
         MenuBarItem_MarginWidth = 10,
-        MenuBarItem_MarginHeight = 8,
+        MenuBarItem_MarginHeight = 6,
 
         // scrollbars
         ScrollBar_Extend = 20,
@@ -150,13 +150,13 @@ namespace Menda
         ToolTip_FrameWidth = 3,
 
         // list headers
-        Header_MarginWidth = 8,
+        Header_MarginWidth = 6,
         Header_ItemSpacing = 4,
         Header_ArrowSize = 10,
 
         // tree view
         ItemView_ArrowSize = 10,
-        ItemView_ItemMarginWidth = 4,
+        ItemView_ItemMarginWidth = 3,
         SidePanel_ItemMarginWidth = 4,
 
         // splitter

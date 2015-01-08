@@ -122,6 +122,7 @@ set(menda_PART_SRCS
     mendahelper.cpp
     mendamdiwindowshadow.cpp
     mendamnemonics.cpp
+    mendapalettehelper.cpp
     mendapropertynames.cpp
     mendashadowhelper.cpp
     mendasplitterproxy.cpp
