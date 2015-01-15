@@ -1,5 +1,5 @@
 project(menda)
-set(PROJECT_VERSION "5.1.95")
+set(PROJECT_VERSION "5.2.90")
 set(PROJECT_VERSION_MAJOR 5)
 
 cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
@@ -13,6 +13,7 @@ else()
   find_package(ECM 0.0.9 REQUIRED NO_MODULE)
   set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
+  include(ECMInstallIcons)
   include(KDEInstallDirs)
   include(KDECMakeSettings)
   include(KDECompilerSettings)

@@ -46,7 +46,7 @@ QString isGtkThemeInstalled(QString themeName, QString settingsFile)
 }
 
 /*
- * Check if gtk theme is already set to oxygen, if it is then we want to upgrade to the menda theme
+ * Check if gtk theme is already set to Menda, if it is then we want to upgrade to the menda theme
  * gtkSettingsFile: filename to use
  * settingsKey: ini group to read from
  * returns: full path to settings file
@@ -61,8 +61,8 @@ QString isGtkThemeSetToOxygen(QString gtkSettingsFile, QString settingsKey)
         if (!settingsKey.isNull()) {
             gtkrcSettings.beginGroup(settingsKey);
         }
-        if (gtkrcSettings.value("gtk-theme-name") != QStringLiteral("Menda")) {
-            qCDebug(GTKMENDA) << "gtk settings file " + gtkSettingsFile + " already exists and is not using menda, will not change";
+        if (gtkrcSettings.value("gtk-theme-name") != QStringLiteral("oxygen-gtk")) {
+            qCDebug(GTKMENDA) << "gtk settings file " + gtkSettingsFile + " already exists and is not using oxygen, will not change";
             return QString();
         }
     }

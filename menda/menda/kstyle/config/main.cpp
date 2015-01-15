@@ -40,7 +40,7 @@ namespace Menda
     {
         QApplication app( argc, argv );
         app.setApplicationName( i18n( "Menda Settings" ) );
-        app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "menda" ) ) );
+        app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "menda-settings" ) ) );
         Menda::ConfigDialog dialog;
         dialog.show();
         bool result = app.exec();

@@ -49,4 +49,10 @@ if(KF5Service_FOUND AND NOT MENDA_USE_KDE4)
 
   install(TARGETS menda-settings5 ${INSTALL_TARGETS_DEFAULT_ARGS})
 
+  # icon
+  message( "ICON_INSTALL_DIR: ${ICON_INSTALL_DIR}" )
+  ecm_install_icons(ICONS sc-apps-menda-settings.svgz
+    DESTINATION ${ICON_INSTALL_DIR}
+    THEME hicolor )
+
 endif()
