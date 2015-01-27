@@ -18,4 +18,3 @@
  *************************************************************************/
 
 #include "mendaaddeventfilter.h"
-#include "mendaaddeventfilter.moc"

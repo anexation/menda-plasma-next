@@ -44,7 +44,6 @@ kconfig_add_kcfg_files(mendadecoration_SRCS mendasettings.kcfgc)
 ### config classes
 ### they are kept separately because they might move in a separate library in the future
 set(mendadecoration_config_SRCS
-    config/mendaconfig.cpp
     config/mendaconfigwidget.cpp
     config/mendadetectwidget.cpp
     config/mendaexceptiondialog.cpp
@@ -91,3 +90,4 @@ endif()
 
 
 install(TARGETS mendadecoration DESTINATION ${PLUGIN_INSTALL_DIR}/org.kde.kdecoration2)
+install(FILES config/mendadecorationconfig.desktop DESTINATION  ${SERVICES_INSTALL_DIR})

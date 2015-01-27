@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaframeshadow.h"
-#include "mendaframeshadow.moc"
 
 #include "menda.h"
 

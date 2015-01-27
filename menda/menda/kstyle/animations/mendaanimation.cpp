@@ -18,4 +18,3 @@
  *************************************************************************/
 
 #include "mendaanimation.h"
-#include "mendaanimation.moc"

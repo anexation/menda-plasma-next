@@ -84,12 +84,18 @@ namespace Menda
 
         //@}
 
-
         //*@name colors
         //@{
         QColor titleBarColor( void ) const;
         QColor outlineColor( void ) const;
         QColor fontColor( void ) const;
+        //@}
+
+        //*@name maximization modes
+        //@{
+        inline bool isMaximized( void ) const;
+        inline bool isMaximizedHorizontally( void ) const;
+        inline bool isMaximizedVertically( void ) const;
         //@}
 
         public Q_SLOTS:
@@ -98,7 +104,7 @@ namespace Menda
         private Q_SLOTS:
         void reconfigure();
         void recalculateBorders();
-        void updateButtonPositions();
+        void updateButtonsGeometry();
         void updateTitleBar();
         void updateAnimationState();
 
@@ -116,13 +122,6 @@ namespace Menda
         inline bool hasNoSideBorders( void ) const;
         //@}
 
-        //*@name maximization modes
-        //@{
-        inline bool isMaximized( void ) const;
-        inline bool isMaximizedHorizontally( void ) const;
-        inline bool isMaximizedVertically( void ) const;
-        //@}
-
         //*@name size grip
         //@{
         void createSizeGrip( void );
@@ -133,6 +132,7 @@ namespace Menda
 
         ColorSettings m_colorSettings;
         InternalSettingsPtr m_internalSettings;
+        bool m_useSeparator = true;
 
         QList<KDecoration2::DecorationButton*> m_buttons;
         KDecoration2::DecorationButtonGroup *m_leftButtons = nullptr;

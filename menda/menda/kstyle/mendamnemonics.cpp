@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendamnemonics.h"
-#include "mendamnemonics.moc"
 
 #include <QKeyEvent>
 #include <QWidget>

@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendascrollbarengine.h"
-#include "mendascrollbarengine.moc"
 
 #include <QEvent>
 

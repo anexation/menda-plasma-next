@@ -1,0 +1,57 @@
+[Desktop Entry]
+Exec=kcmshell5 mendastyleconfig
+Icon=preferences-desktop-theme
+Type=Service
+X-KDE-ServiceTypes=KCModule
+
+X-KDE-Library=kstyle_menda_config
+X-KDE-PluginKeyword=kcmodule
+X-KDE-ParentApp=kcontrol
+X-KDE-Weight=50
+
+Name=Widget Style
+Name[ca]=Estil dels estris
+Name[en_GB]=Widget Style
+Name[fi]=Elementtien tyyli
+Name[it]=Stile degli oggetti
+Name[lt]=Valdiklių stilius
+Name[nl]=Widget-stijl
+Name[pl]=Styl elementów interfejsu
+Name[pt]=Estilo Gráfico
+Name[pt_BR]=Estilo dos widgets
+Name[sk]=Štýl prvku
+Name[sv]=Stil för grafiska komponenter
+Name[uk]=Стиль віджетів
+Name[x-test]=xxWidget Stylexx
+Name[zh_CN]=部件样式
+Comment=Modify the appearance of widgets
+Comment[ca]=Modifica l'aparença dels estris
+Comment[en_GB]=Modify the appearance of widgets
+Comment[fi]=Muuta elementtien ulkoasua
+Comment[it]=Modifica l'aspetto degli oggetti
+Comment[lt]=Keisti valdiklių išvaizdą
+Comment[nl]=Wijzig het uiterlijk van widgets
+Comment[pl]=Zmień wygląd elementów interfejsu
+Comment[pt]=Modificar a aparência dos elementos gráficos
+Comment[pt_BR]=Modifica a aparência dos widgets
+Comment[sk]=Zmena vzhľadu prvkov
+Comment[sv]=Ändra utseende hos grafiska komponenter
+Comment[uk]=Зміна вигляду віджетів
+Comment[x-test]=xxModify the appearance of widgetsxx
+Comment[zh_CN]=修改部件外观
+
+X-KDE-Keywords=menda,widget,style
+X-KDE-Keywords[ca]=menda,brisa,estri,estil
+X-KDE-Keywords[en_GB]=menda,widget,style
+X-KDE-Keywords[fi]=menda,widget,style,käyttöliittymäelementti,tyyli,elementti,kontrolli
+X-KDE-Keywords[it]=brezza,oggetto,stile
+X-KDE-Keywords[lt]=menda,valdiklis,stilius
+X-KDE-Keywords[nl]=menda,widget,stijl
+X-KDE-Keywords[pl]=menda,widget,styl,bryza,element interfejsu
+X-KDE-Keywords[pt]=brisa,elemento,estilo
+X-KDE-Keywords[pt_BR]=menda,widget,estilo
+X-KDE-Keywords[sk]=menda,widget,štýl
+X-KDE-Keywords[sv]=menda,grafisk komponent,stil
+X-KDE-Keywords[uk]=menda,widget,style,бриз,віджет,стиль,вигляд
+X-KDE-Keywords[x-test]=xxmendaxx,xxwidgetxx,xxstylexx
+X-KDE-Keywords[zh_CN]=menda,widget,style,微风,部件,样式

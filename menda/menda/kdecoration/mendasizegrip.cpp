@@ -19,7 +19,6 @@
 
 
 #include "mendasizegrip.h"
-#include "mendasizegrip.moc"
 
 #include <KDecoration2/DecoratedClient>
 

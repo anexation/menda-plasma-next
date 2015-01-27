@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendabusyindicatorengine.h"
-#include "mendabusyindicatorengine.moc"
 
 #include "menda.h"
 

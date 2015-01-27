@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendawidgetstatedata.h"
-#include "mendawidgetstatedata.moc"
 
 namespace Menda
 {

@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendastyle.h"
-#include "mendastyle.moc"
 
 #include "menda.h"
 #include "mendaanimations.h"

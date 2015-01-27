@@ -24,7 +24,7 @@
 #include "menda.h"
 #include "mendasettingsprovider.h"
 #include "config-menda.h"
-#include "config/mendaconfig.h"
+#include "config/mendaconfigwidget.h"
 
 #include "mendabutton.h"
 #include "mendasizegrip.h"
@@ -51,7 +51,7 @@ K_PLUGIN_FACTORY_WITH_JSON(
     "menda.json",
     registerPlugin<Menda::Decoration>();
     registerPlugin<Menda::Button>(QStringLiteral("button"));
-    registerPlugin<Menda::ConfigurationModule>(QStringLiteral("kcmodule"));
+    registerPlugin<Menda::ConfigWidget>(QStringLiteral("kcmodule"));
 )
 
 namespace Menda
@@ -68,6 +68,7 @@ namespace Menda
         , m_animation( new QPropertyAnimation( this ) )
     {
         g_sDecoCount++;
+        m_useSeparator = (m_colorSettings.palette().color( QPalette::Window ) != m_colorSettings.activeTitleBar() );
     }
 
     //________________________________________________________________
@@ -104,13 +105,13 @@ namespace Menda
     //________________________________________________________________
     QColor Decoration::outlineColor() const
     {
-
+        if( !m_useSeparator ) return QColor();
         if( m_animation->state() == QPropertyAnimation::Running )
         {
-            QColor color( client().data()->palette().color( QPalette::Highlight ) );
+            QColor color( m_colorSettings.palette().color( QPalette::Highlight ) );
             color.setAlpha( color.alpha()*m_opacity );
             return color;
-        } else if( client().data()->isActive() ) return client().data()->palette().color( QPalette::Highlight );
+        } else if( client().data()->isActive() ) return m_colorSettings.palette().color( QPalette::Highlight );
         else return QColor();
     }
 
@@ -164,6 +165,7 @@ namespace Menda
         connect(client().data(), &KDecoration2::DecoratedClient::paletteChanged,   this,
             [this]() {
                 m_colorSettings.update(client().data()->palette());
+                m_useSeparator = (m_colorSettings.palette().color( QPalette::Window ) != m_colorSettings.activeTitleBar() );
                 update();
             }
         );
@@ -171,10 +173,10 @@ namespace Menda
         connect(client().data(), &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateTitleBar);
         connect(client().data(), &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::setOpaque);
 
-        connect(client().data(), &KDecoration2::DecoratedClient::widthChanged,     this, &Decoration::updateButtonPositions);
-        connect(client().data(), &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateButtonPositions);
+        connect(client().data(), &KDecoration2::DecoratedClient::widthChanged,     this, &Decoration::updateButtonsGeometry);
+        connect(client().data(), &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateButtonsGeometry);
         connect(client().data(), &KDecoration2::DecoratedClient::shadedChanged,    this, &Decoration::recalculateBorders);
-        connect(client().data(), &KDecoration2::DecoratedClient::shadedChanged,    this, &Decoration::updateButtonPositions);
+        connect(client().data(), &KDecoration2::DecoratedClient::shadedChanged,    this, &Decoration::updateButtonsGeometry);
 
         createButtons();
         createShadow();
@@ -282,10 +284,10 @@ namespace Menda
         // padding below
         // extra pixel is used for the active window outline
         const int baseSize = settings()->smallSpacing();
-        top += baseSize*Metrics::TitleBar_TopMargin + 1;
+        top += baseSize*Metrics::TitleBar_BottomMargin + 1;
 
         // padding above
-        if (!isMaximized()) top += baseSize*TitleBar_BottomMargin;
+        top += baseSize*TitleBar_TopMargin;
 
         int bottom = isMaximizedVertically() || c->isShaded() || edges.testFlag(Qt::BottomEdge) ? 0 : borderSize(true);
         setBorders(QMargins(left, top, right, bottom));
@@ -313,14 +315,48 @@ namespace Menda
     {
         m_leftButtons = new KDecoration2::DecorationButtonGroup(KDecoration2::DecorationButtonGroup::Position::Left, this, &Button::create);
         m_rightButtons = new KDecoration2::DecorationButtonGroup(KDecoration2::DecorationButtonGroup::Position::Right, this, &Button::create);
-        updateButtonPositions();
+        updateButtonsGeometry();
     }
 
     //________________________________________________________________
-    void Decoration::updateButtonPositions()
+    void Decoration::updateButtonsGeometry()
     {
         auto s = settings();
-        const int vPadding = (isMaximized() ? 0 : s->smallSpacing()*Metrics::TitleBar_TopMargin) + (captionHeight()-buttonHeight())/2;
+
+        // adjust button position
+        const int bHeight = captionHeight() + (isMaximized() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0);
+        const int bWidth = buttonHeight();
+        const int verticalOffset = (isMaximized() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0) + (captionHeight()-buttonHeight())/2;
+        foreach( const QPointer<KDecoration2::DecorationButton>& button, m_leftButtons->buttons() + m_rightButtons->buttons() )
+        {
+            button.data()->setGeometry( QRectF( QPoint( 0, 0 ), QSizeF( bWidth, bHeight ) ) );
+            static_cast<Button*>( button.data() )->setOffset( QPointF( 0, verticalOffset ) );
+        }
+
+        if( isMaximized() )
+        {
+            // add offsets on the side buttons, to preserve padding, but satisfy Fitts law
+            const int hOffset = s->smallSpacing()*Metrics::TitleBar_SideMargin;
+            if( !m_leftButtons->buttons().isEmpty() )
+            {
+                auto button = static_cast<Button*>( m_leftButtons->buttons().front().data() );
+                button->setGeometry( QRectF( QPoint( 0, 0 ), QSizeF( bWidth + hOffset, bHeight ) ) );
+                button->setFlag( Button::FlagFirstInList );
+                button->setHorizontalOffset( hOffset );
+            }
+
+            if( !m_rightButtons->buttons().isEmpty() )
+            {
+                auto button = static_cast<Button*>( m_rightButtons->buttons().back().data() );
+                button->setGeometry( QRectF( QPoint( 0, 0 ), QSizeF( bWidth + hOffset, bHeight ) ) );
+                button->setFlag( Button::FlagLastInList );
+                button->setHorizontalOffset( hOffset );
+            }
+
+        }
+
+        // adjust buttons position
+        const int vPadding = isMaximized() ? 0 : s->smallSpacing()*Metrics::TitleBar_TopMargin;
         const int hPadding = isMaximized() ? 0 : s->smallSpacing()*Metrics::TitleBar_SideMargin;
 
         m_rightButtons->setSpacing(s->smallSpacing()*Metrics::TitleBar_ButtonSpacing);
@@ -428,19 +464,14 @@ namespace Menda
 
     //________________________________________________________________
     int Decoration::captionHeight() const
-    {
-
-        return isMaximized() ?
-            borderTop() - settings()->smallSpacing()*Metrics::TitleBar_BottomMargin - 1:
-            borderTop() - settings()->smallSpacing()*(Metrics::TitleBar_BottomMargin + Metrics::TitleBar_TopMargin ) - 1;
-    }
+    { return borderTop() - settings()->smallSpacing()*(Metrics::TitleBar_BottomMargin + Metrics::TitleBar_TopMargin ) - 1; }
 
     //________________________________________________________________
     QRect Decoration::captionRect() const
     {
         const int leftOffset = m_leftButtons->geometry().x() + m_leftButtons->geometry().width() + Metrics::TitleBar_SideMargin*settings()->smallSpacing();
         const int rightOffset = size().width() - m_rightButtons->geometry().x() + Metrics::TitleBar_SideMargin*settings()->smallSpacing();
-        const int yOffset = isMaximized() ? 0 : settings()->smallSpacing()*Metrics::TitleBar_TopMargin;
+        const int yOffset = settings()->smallSpacing()*Metrics::TitleBar_TopMargin;
 
         QRect boundingRect( settings()->fontMetrics().boundingRect( client().data()->caption()).toRect() );
         boundingRect.setTop( yOffset );
@@ -523,7 +554,7 @@ namespace Menda
             return color;
         };
 
-        const QColor shadowColor( client().data()->palette().color( QPalette::Shadow ) );
+        const QColor shadowColor( m_colorSettings.palette().color( QPalette::Shadow ) );
 
         QRadialGradient radialGradient( Metrics::Shadow_Size, Metrics::Shadow_Size, Metrics::Shadow_Size);
         radialGradient.setColorAt(0.0,  gradientStopColor(shadowColor, 0.35));

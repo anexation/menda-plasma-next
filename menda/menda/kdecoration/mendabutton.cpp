@@ -41,15 +41,9 @@ namespace Menda
         m_animation->setPropertyName( "opacity" );
         m_animation->setEasingCurve( QEasingCurve::InOutQuad );
 
-        // setup geometry
+        // setup default geometry
         const int height = decoration->buttonHeight();
         setGeometry(QRect(0, 0, height, height));
-        connect(decoration, &Decoration::bordersChanged, this, [this, decoration]
-        {
-            const int height = decoration->buttonHeight();
-            if (height == geometry().height()) return;
-            setGeometry(QRectF(geometry().topLeft(), QSizeF(height, height)));
-        });
 
         // connect hover state changed
         connect( this, &KDecoration2::DecorationButton::hoveredChanged, this, &Button::updateAnimationState );
@@ -59,7 +53,7 @@ namespace Menda
     //__________________________________________________________________
     Button::Button(QObject *parent, const QVariantList &args)
         : DecorationButton(args.at(0).value<KDecoration2::DecorationButtonType>(), args.at(1).value<Decoration*>(), parent)
-        , m_standalone(true)
+        , m_flag(FlagStandalone)
         , m_animation( new QPropertyAnimation( this ) )
     {}
 
@@ -88,6 +82,12 @@ namespace Menda
 
         if (!decoration()) return;
 
+        painter->save();
+
+        // translate from offset
+        if( m_flag == FlagFirstInList ) painter->translate( m_offset );
+        else painter->translate( 0, m_offset.y() );
+
         if (type() == KDecoration2::DecorationButtonType::Menu)
         {
             const QPixmap pixmap = decoration()->client().data()->icon().pixmap(size().toSize());
@@ -99,13 +99,14 @@ namespace Menda
 
         }
 
+        painter->restore();
+
     }
 
     //__________________________________________________________________
     void Button::drawIcon( QPainter *painter ) const
     {
 
-        painter->save();
         painter->setRenderHints( QPainter::Antialiasing );
 
         /*
@@ -114,7 +115,9 @@ namespace Menda
         all further rendering is preformed inside QRect( 0, 0, 18, 18 )
         */
         painter->translate( geometry().topLeft() );
-        painter->scale( geometry().width()/20, geometry().height()/20 );
+
+        const qreal width( geometry().width() - m_offset.x() );
+        painter->scale( width/20, width/20 );
         painter->translate( 1, 1 );
 
         // render background
@@ -300,11 +303,6 @@ namespace Menda
 
         }
 
-        painter->restore();
-
-
-
-
     }
 
     //__________________________________________________________________
@@ -394,6 +392,6 @@ namespace Menda
         m_animation->setDirection( hovered ? QPropertyAnimation::Forward : QPropertyAnimation::Backward );
         if( m_animation->state() != QPropertyAnimation::Running ) m_animation->start();
 
-   }
+    }
 
 } // namespace

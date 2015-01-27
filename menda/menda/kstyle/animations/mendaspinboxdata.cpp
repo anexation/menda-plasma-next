@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaspinboxdata.h"
-#include "mendaspinboxdata.moc"
 
 namespace Menda
 {

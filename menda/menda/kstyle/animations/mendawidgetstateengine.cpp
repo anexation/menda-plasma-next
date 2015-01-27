@@ -19,7 +19,6 @@
  *************************************************************************/
 
 #include "mendawidgetstateengine.h"
-#include "mendawidgetstateengine.moc"
 
 #include "mendaenabledata.h"
 

@@ -1,3 +1,6 @@
+#ifndef mendastyleconfigmodule_h
+#define mendastyleconfigmodule_h
+
 /*************************************************************************
  * Copyright (C) 2014 by Hugo Pereira Da Costa <hugo.pereira@free.fr>    *
  *                                                                       *
@@ -17,33 +20,35 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-#include "mendaheaderviewengine.h"
+#include "mendastyleconfig.h"
 
-#include <QEvent>
+#include <KCModule>
 
 namespace Menda
 {
 
-    //____________________________________________________________
-    bool HeaderViewEngine::registerWidget( QWidget* widget )
+    //* configuration module
+    class ConfigurationModule: public KCModule
     {
 
-        if( !widget ) return false;
+        Q_OBJECT
 
-        // create new data class
-        if( !_data.contains( widget ) ) _data.insert( widget, new HeaderViewData( this, widget, duration() ), enabled() );
+        public:
+        ConfigurationModule(QWidget *parent, const QVariantList &args);
 
-        // connect destruction signal
-        connect( widget, SIGNAL(destroyed(QObject*)), this, SLOT(unregisterWidget(QObject*)), Qt::UniqueConnection );
-        return true;
+        public Q_SLOTS:
 
-    }
+        void defaults() override;
+        void load() override;
+        void save() override;
 
-    //____________________________________________________________
-    bool HeaderViewEngine::updateState( const QObject* object, const QPoint& position, bool value )
-    {
-        DataMap<HeaderViewData>::Value data( _data.find( object ) );
-        return ( data && data.data()->updateState( position, value ) );
-    }
+        private:
+
+        //* configuration
+        StyleConfig* m_config;
+
+    };
 
 }
+
+#endif

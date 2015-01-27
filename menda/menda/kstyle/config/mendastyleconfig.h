@@ -46,6 +46,9 @@ namespace Menda
 
         public Q_SLOTS:
 
+        //* load setup from config data
+        void load( void );
+
         //* save current state
         void save( void );
 
@@ -59,11 +62,6 @@ namespace Menda
 
         //* update modified state when option is checked/unchecked
         void updateChanged( void );
-
-        protected:
-
-        //* load setup from config data
-        void load( void );
 
     };
 

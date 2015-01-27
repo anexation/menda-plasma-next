@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendamdiwindowshadow.h"
-#include "mendamdiwindowshadow.moc"
 
 #include "menda.h"
 #include "mendastyleconfigdata.h"
@@ -37,29 +36,10 @@ namespace Menda
         if( !_widget ) return;
 
         const int size( Metrics::Shadow_Size - Metrics::Shadow_Overlap );
-        int topSize( size - Metrics::Shadow_Offset );
-        int bottomSize( size );
-        int rightSize( 0 );
-        int leftSize( 0 );
-
-        switch( StyleConfigData::lightSource() )
-        {
-            case StyleConfigData::LS_TOPLEFT:
-            leftSize = size - Metrics::Shadow_Offset;
-            rightSize = size;
-            break;
-
-            case StyleConfigData::LS_TOPRIGHT:
-            rightSize = size - Metrics::Shadow_Offset;
-            leftSize = size;
-            break;
-
-            case StyleConfigData::LS_TOP:
-            leftSize = size - Metrics::Shadow_Offset/2;
-            rightSize = size - Metrics::Shadow_Offset/2;
-            break;
-
-        }
+        const int topSize( size - Metrics::Shadow_Offset );
+        const int bottomSize( size );
+        const int leftSize( size - Metrics::Shadow_Offset );
+        const int rightSize( size );
 
         // get tileSet rect
         _shadowTilesRect = _widget->frameGeometry().adjusted( -leftSize, -topSize, rightSize, bottomSize );
@@ -109,7 +89,9 @@ namespace Menda
     {
 
         // check widget type
-        if( !( widget && qobject_cast<QMdiSubWindow*>( widget ) ) ) return false;
+        QMdiSubWindow* subwindow( qobject_cast<QMdiSubWindow*>( widget ) );
+        if( !subwindow ) return false;
+        if( subwindow->widget() && subwindow->widget()->inherits( "KMainWindow" ) ) return false;
 
         // make sure widget is not already registered
         if( isRegistered( widget ) ) return false;

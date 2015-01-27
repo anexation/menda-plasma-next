@@ -24,7 +24,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "mendaexceptiondialog.h"
-#include "mendaexceptiondialog.moc"
 #include "mendadetectwidget.h"
 #include "config-menda.h"
 

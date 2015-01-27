@@ -24,37 +24,33 @@
 // IN THE SOFTWARE.
 //////////////////////////////////////////////////////////////////////////////
 
-#include "mendaconfigdialog.h"
-#include "../menda.h"
-#include "../config-menda.h"
-
+#include <QAbstractScrollArea>
 #include <QApplication>
 #include <QIcon>
 
+#include <KCMultiDialog>
 #include <KLocalizedString>
-
-namespace Menda
-{
-
-    int run(int argc, char *argv[])
-    {
-        QApplication app( argc, argv );
-        app.setApplicationName( i18n( "Menda Settings" ) );
-        app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "menda-settings" ) ) );
-        Menda::ConfigDialog dialog;
-        dialog.show();
-        bool result = app.exec();
-        return result;
-    }
-
-}
 
 //__________________________________________
 int main(int argc, char *argv[])
 {
-    #if !MENDA_USE_KDE4
     KLocalizedString::setApplicationDomain("menda_style_config");
-    #endif
 
-    return Menda::run( argc, argv );
+    QApplication app( argc, argv );
+    app.setApplicationName( i18n( "Menda Settings" ) );
+    app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "menda-settings" ) ) );
+
+    KCMultiDialog dialog;
+    dialog.setWindowTitle( i18n( "Menda Settings" ) );
+    dialog.addModule( QStringLiteral( "mendastyleconfig" ) );
+    dialog.addModule( QStringLiteral( "mendadecorationconfig" ) );
+    dialog.show();
+
+    foreach( auto child, dialog.findChildren<QAbstractScrollArea*>() )
+    {
+        child->adjustSize();
+        child->viewport()->adjustSize();
+    }
+
+    return app.exec();
 }

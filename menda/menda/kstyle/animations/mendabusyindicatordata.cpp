@@ -18,4 +18,3 @@
  *************************************************************************/
 
 #include "mendabusyindicatordata.h"
-#include "mendabusyindicatordata.moc"

@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendadialengine.h"
-#include "mendadialengine.moc"
 
 #include <QEvent>
 

@@ -44,7 +44,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "mendaheaderviewdata.h"
-#include "mendaheaderviewdata.moc"
 
 #include <QHoverEvent>
 #include <QTextStream>

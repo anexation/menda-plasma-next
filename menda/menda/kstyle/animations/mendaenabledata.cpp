@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaenabledata.h"
-#include "mendaenabledata.moc"
 
 namespace Menda
 {

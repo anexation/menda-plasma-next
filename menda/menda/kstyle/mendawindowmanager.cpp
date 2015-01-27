@@ -47,7 +47,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "mendawindowmanager.h"
-#include "mendawindowmanager.moc"
 #include "mendapropertynames.h"
 #include "mendastyleconfigdata.h"
 #include "mendahelper.h"

@@ -1,3 +1,4 @@
+
 /*************************************************************************
  * Copyright (C) 2014 by Hugo Pereira Da Costa <hugo.pereira@free.fr>    *
  *                                                                       *
@@ -17,33 +18,49 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-#include "mendaheaderviewengine.h"
+#include "mendastyleconfigmodule.h"
 
-#include <QEvent>
+#include <KPluginFactory>
+
+
+K_PLUGIN_FACTORY(
+    MendaStyleConfigFactory,
+    registerPlugin<Menda::ConfigurationModule>(QStringLiteral("kcmodule"));
+)
+
+#include "mendastyleconfigmodule.moc"
 
 namespace Menda
 {
 
-    //____________________________________________________________
-    bool HeaderViewEngine::registerWidget( QWidget* widget )
+    //_______________________________________________________________________
+    ConfigurationModule::ConfigurationModule(QWidget *parent, const QVariantList &args):
+        KCModule(parent, args)
     {
-
-        if( !widget ) return false;
-
-        // create new data class
-        if( !_data.contains( widget ) ) _data.insert( widget, new HeaderViewData( this, widget, duration() ), enabled() );
-
-        // connect destruction signal
-        connect( widget, SIGNAL(destroyed(QObject*)), this, SLOT(unregisterWidget(QObject*)), Qt::UniqueConnection );
-        return true;
-
+        setLayout(new QVBoxLayout(this));
+        layout()->addWidget( m_config = new StyleConfig( this ) );
+        connect(m_config, static_cast<void (StyleConfig::*)(bool)>(&StyleConfig::changed), this, static_cast<void (KCModule::*)(bool)>(&KCModule::changed));
     }
 
-    //____________________________________________________________
-    bool HeaderViewEngine::updateState( const QObject* object, const QPoint& position, bool value )
+    //_______________________________________________________________________
+    void ConfigurationModule::defaults()
     {
-        DataMap<HeaderViewData>::Value data( _data.find( object ) );
-        return ( data && data.data()->updateState( position, value ) );
+        m_config->defaults();
+        KCModule::defaults();
+    }
+
+    //_______________________________________________________________________
+    void ConfigurationModule::load()
+    {
+        m_config->load();
+        KCModule::load();
+    }
+
+    //_______________________________________________________________________
+    void ConfigurationModule::save()
+    {
+        m_config->save();
+        KCModule::save();
     }
 
 }

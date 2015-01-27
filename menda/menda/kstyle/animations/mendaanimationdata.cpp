@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaanimationdata.h"
-#include "mendaanimationdata.moc"
 
 namespace Menda
 {

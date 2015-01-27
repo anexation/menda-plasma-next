@@ -24,7 +24,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "mendaexceptionlistwidget.h"
-#include "mendaexceptionlistwidget.moc"
 #include "mendaexceptiondialog.h"
 
 #include <KLocalizedString>

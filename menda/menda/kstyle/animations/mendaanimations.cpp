@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaanimations.h"
-#include "mendaanimations.moc"
 #include "mendapropertynames.h"
 #include "mendastyleconfigdata.h"
 

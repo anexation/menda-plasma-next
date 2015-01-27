@@ -44,7 +44,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "mendatabbardata.h"
-#include "mendatabbardata.moc"
 
 #include <QHoverEvent>
 #include <QTabBar>

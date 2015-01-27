@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendatabbarengine.h"
-#include "mendatabbarengine.moc"
 
 #include <QEvent>
 

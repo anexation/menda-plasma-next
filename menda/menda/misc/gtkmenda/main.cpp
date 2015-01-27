@@ -46,7 +46,7 @@ QString isGtkThemeInstalled(QString themeName, QString settingsFile)
 }
 
 /*
- * Check if gtk theme is already set to Menda, if it is then we want to upgrade to the menda theme
+ * Check if gtk theme is already set to oxygen, if it is then we want to upgrade to the menda theme
  * gtkSettingsFile: filename to use
  * settingsKey: ini group to read from
  * returns: full path to settings file

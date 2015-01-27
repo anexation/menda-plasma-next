@@ -18,4 +18,3 @@
  *************************************************************************/
 
 #include "mendabaseengine.h"
-#include "mendabaseengine.moc"

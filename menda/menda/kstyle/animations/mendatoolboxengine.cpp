@@ -19,7 +19,6 @@
 
 
 #include "mendatoolboxengine.h"
-#include "mendatoolboxengine.moc"
 
 namespace Menda
 {

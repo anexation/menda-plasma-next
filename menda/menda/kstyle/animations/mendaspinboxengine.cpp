@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendaspinboxengine.h"
-#include "mendaspinboxengine.moc"
 
 #include <QEvent>
 

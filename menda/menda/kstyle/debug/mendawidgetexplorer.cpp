@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendawidgetexplorer.h"
-#include "mendawidgetexplorer.moc"
 
 #include "menda.h"
 

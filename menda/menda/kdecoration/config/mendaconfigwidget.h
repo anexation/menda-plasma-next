@@ -30,6 +30,9 @@
 #include "mendasettings.h"
 #include "menda.h"
 
+#include <KCModule>
+#include <KSharedConfig>
+
 #include <QWidget>
 #include <QSharedPointer>
 
@@ -37,7 +40,7 @@ namespace Menda
 {
 
     //_____________________________________________
-    class ConfigWidget: public QWidget
+    class ConfigWidget: public KCModule
     {
 
         Q_OBJECT
@@ -45,33 +48,19 @@ namespace Menda
         public:
 
         //* constructor
-        explicit ConfigWidget( QWidget* );
+        explicit ConfigWidget( QWidget*, const QVariantList& );
 
         //* destructor
-        virtual ~ConfigWidget( void )
-        {}
+        virtual ~ConfigWidget( void ) = default;
 
-        //* set configuration
-        void setInternalSettings( InternalSettingsPtr );
+        //* default
+        void defaults() override;
 
         //* load configuration
-        void load( void );
+        void load( void ) override;
 
         //* save configuration
-        void save( void );
-
-        //* true if changed
-        virtual bool isChanged( void ) const
-        { return m_changed; }
-
-        //* exceptions
-        ExceptionListWidget* exceptionListWidget( void ) const
-        { return m_ui.exceptions; }
-
-        Q_SIGNALS:
-
-        //* emmited when changed
-        void changed( bool );
+        void save( void ) override;
 
         protected Q_SLOTS:
 
@@ -81,16 +70,15 @@ namespace Menda
         protected:
 
         //* set changed state
-        virtual void setChanged( bool value )
-        {
-            m_changed = value;
-            emit changed( value );
-        }
+        void setChanged( bool );
 
         private:
 
         //* ui
         Ui_MendaConfigurationUI m_ui;
+
+        //* kconfiguration object
+        KSharedConfig::Ptr m_configuration;
 
         //* internal exception
         InternalSettingsPtr m_internalSettings;

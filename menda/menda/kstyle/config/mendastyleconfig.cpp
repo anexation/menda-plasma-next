@@ -19,7 +19,6 @@
  *************************************************************************/
 
 #include "mendastyleconfig.h"
-#include "mendastyleconfig.moc"
 
 #include "../menda.h"
 #include "../config-menda.h"

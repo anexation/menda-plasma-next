@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendadialdata.h"
-#include "mendadialdata.moc"
 
 #include <QHoverEvent>
 #include <QDial>

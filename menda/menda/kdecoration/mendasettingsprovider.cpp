@@ -19,7 +19,6 @@
  */
 
 #include "mendasettingsprovider.h"
-#include "mendasettingsprovider.moc"
 
 #include "mendaexceptionlist.h"
 

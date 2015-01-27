@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendascrollbardata.h"
-#include "mendascrollbardata.moc"
 
 #include <QHoverEvent>
 #include <QScrollBar>

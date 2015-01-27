@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendasplitterproxy.h"
-#include "mendasplitterproxy.moc"
 
 #include "menda.h"
 #include "mendastyleconfigdata.h"

@@ -18,7 +18,6 @@
  *************************************************************************/
 
 #include "mendagenericdata.h"
-#include "mendagenericdata.moc"
 
 #include <QTextStream>
 
